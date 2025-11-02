@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const FIREWORKS_API_KEY = "YOUR_FIREWORKS_API_KEY";
+const FIREWORKS_API_KEY = "fw_3ZeaLJeQtbMzAk1cPZZmP1j3";
 
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
