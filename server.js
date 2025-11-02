@@ -18,9 +18,9 @@ app.post("/chat", async (req, res) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: "dobby-70b",
-      prompt: message,
-      max_tokens: 200,
+      model: "accounts/fireworks/models/llama-v3p1-8b-instruct",
+      prompt: `You are Balls AI, a friendly, humorous, and intelligent chatbot created by Amit Prasad. Respond naturally and conversationally.\n\nUser: ${message}\nBalls AI:`,
+      max_tokens: 200
     })
   });
 
@@ -28,4 +28,4 @@ app.post("/chat", async (req, res) => {
   res.json({ reply: data.choices[0].text.trim() });
 });
 
-app.listen(3000, () => console.log("🚀 Sentient Chat running on http://localhost:3000"));
+app.listen(3000, () => console.log("🚀 Balls AI backend running at http://localhost:3000"));
