@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sentient Chat</title>
+  <style>
+    body { font-family: Arial; background: #0a0a0a; color: #fff; text-align: center; }
+    #chat { width: 400px; margin: 50px auto; border: 1px solid #333; padding: 10px; border-radius: 10px; background: #111; }
+    input { width: 80%; padding: 10px; }
+    button { padding: 10px; }
+    .msg { text-align: left; margin: 10px 0; }
+    .ai { color: #0ff; }
+  </style>
+</head>
+<body>
+  <h1>🤖 Sentient Chat AI</h1>
+  <div id="chat"></div>
+  <input id="input" placeholder="Type a message..." />
+  <button onclick="sendMsg()">Send</button>
+
+  <script>
+    async function sendMsg() {
+      const input = document.getElementById('input');
+      const chat = document.getElementById('chat');
+      const userMsg = input.value;
+      chat.innerHTML += `<div class='msg'>🧑: ${userMsg}</div>`;
+      input.value = "";
+
+      const res = await fetch("http://localhost:3000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMsg })
+      });
+
+      const data = await res.json();
+      chat.innerHTML += `<div class='msg ai'>🤖: ${data.reply}</div>`;
+    }
+  </script>
+</body>
+</html>
