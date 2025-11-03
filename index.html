@@ -1,30 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Balls AI 💬</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="sidebar">
-    <h2>Balls AI 💬</h2>
-    <button id="newChatBtn">+ New Chat</button>
+  <div id="container">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="logo-box">
+        <img src="d6c3af26-f365-4edc-afc7-9efd86c28bd2.png" alt="Balls AI Logo" class="logo" />
+        <h2>Balls AI</h2>
+      </div>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search chats..." />
-      <button id="micBtn">🎙️</button>
-    </div>
+      <button id="newChatBtn">+ New Chat</button>
 
-    <div id="chatHistory"></div>
-  </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search chats..." />
+      </div>
 
-  <div id="main">
-    <div id="chatWindow"></div>
-    <div id="chatBox">
-      <input type="text" id="userInput" placeholder="Type a message..." />
-      <button id="sendBtn">Send</button>
-    </div>
+      <div id="chatHistory"></div>
+    </aside>
+
+    <!-- Divider -->
+    <div id="divider"></div>
+
+    <!-- Chat Area -->
+    <main id="chatArea">
+      <div id="chatWindow"></div>
+
+      <div id="chatBox">
+        <label for="fileInput" class="attach">📎</label>
+        <input type="file" id="fileInput" accept="image/*,video/*" hidden />
+        <input type="text" id="userInput" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+        <button id="micBtn">🎙️</button>
+      </div>
+    </main>
   </div>
 
   <script src="script.js"></script>
