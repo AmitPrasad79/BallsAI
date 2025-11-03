@@ -289,22 +289,25 @@ body {
 
 #bgCanvas {
   position: absolute;
-  top: 0;
-  left: 262px; /* same as your sidebar + divider width */
-  width: calc(100% - 262px);
+  inset: 0;
+  width: 100%;
   height: 100%;
   z-index: 0;
   pointer-events: none;
-  background: transparent;
-  opacity: 0.35; /* around 35% opacity */
+  opacity: 0.35;
 }
 
-#chatArea,
-#chatWindow,
-#chatBox {
+#chatArea {
   position: relative;
   z-index: 2;
 }
+
+.sidebar,
+.divider {
+  z-index: 3;
+  position: relative;
+}
+
 
 body, header, main, footer, .modal {
   position: relative;
