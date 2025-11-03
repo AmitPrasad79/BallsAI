@@ -3,49 +3,59 @@ const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 const micBtn = document.getElementById("micBtn");
 const newChatBtn = document.getElementById("newChatBtn");
-const searchInput = document.getElementById("searchInput");
 const chatHistory = document.getElementById("chatHistory");
 const fileInput = document.getElementById("fileInput");
 
-let chats = JSON.parse(localStorage.getItem("ballsChats")) || [];
-let activeChatId = null;
+let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
+let currentChat = 0;
 
 function saveChats() {
-  localStorage.setItem("ballsChats", JSON.stringify(chats));
+  localStorage.setItem("ballsAI_chats", JSON.stringify(chats));
+}
+
+function loadChats() {
+  chatHistory.innerHTML = "";
+  chats.forEach((chat, index) => {
+    const div = document.createElement("div");
+    div.className = "chat-item";
+    div.innerHTML = `
+      <span>${chat.title || "New Chat"}</span>
+      <button class="delete-btn" onclick="deleteChat(${index}, event)">✖</button>
+    `;
+    div.onclick = (e) => {
+      if (e.target.classList.contains("delete-btn")) return;
+      switchChat(index);
+    };
+    chatHistory.appendChild(div);
+  });
+}
+
+function switchChat(index) {
+  currentChat = index;
+  displayMessages();
 }
 
 function newChat() {
-  const chatId = Date.now().toString();
-  chats.unshift({ id: chatId, title: "New Chat", messages: [] });
-  activeChatId = chatId;
+  chats.push({ title: "New Chat", messages: [] });
+  currentChat = chats.length - 1;
   saveChats();
-  renderChatList();
-  renderMessages();
-}
-newChatBtn.addEventListener("click", newChat);
-
-function renderChatList(filter = "") {
-  chatHistory.innerHTML = "";
-  chats
-    .filter(c => c.title.toLowerCase().includes(filter.toLowerCase()))
-    .forEach(chat => {
-      const div = document.createElement("div");
-      div.className = "chat-item";
-      div.textContent = chat.title;
-      div.onclick = () => {
-        activeChatId = chat.id;
-        renderMessages();
-      };
-      chatHistory.appendChild(div);
-    });
+  loadChats();
+  displayMessages();
 }
 
-function renderMessages() {
+function deleteChat(index, e) {
+  e.stopPropagation();
+  chats.splice(index, 1);
+  if (currentChat >= chats.length) currentChat = chats.length - 1;
+  saveChats();
+  loadChats();
+  displayMessages();
+}
+
+function displayMessages() {
   chatWindow.innerHTML = "";
-  const chat = chats.find(c => c.id === activeChatId);
-  if (!chat) return;
-
-  chat.messages.forEach(msg => {
+  if (!chats[currentChat]) return;
+  chats[currentChat].messages.forEach((msg) => {
     const div = document.createElement("div");
     div.className = `message ${msg.sender}`;
     div.textContent = msg.text;
@@ -58,9 +68,9 @@ async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  const chat = chats.find(c => c.id === activeChatId);
-  chat.messages.push({ sender: "user", text });
-  renderMessages();
+  const userMsg = { sender: "user", text };
+  chats[currentChat].messages.push(userMsg);
+  displayMessages();
   userInput.value = "";
 
   const res = await fetch("/api/chat", {
@@ -68,42 +78,43 @@ async function sendMessage() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: text }),
   });
-  const data = await res.json();
-  const reply = data.reply || "No reply from Balls AI.";
 
-  chat.messages.push({ sender: "ai", text: reply });
-  chat.title = text.substring(0, 20) + "...";
+  const data = await res.json();
+  const reply = data.reply || "No reply from model.";
+
+  chats[currentChat].messages.push({ sender: "bot", text: reply });
+  chats[currentChat].title = text.slice(0, 20) + (text.length > 20 ? "..." : "");
   saveChats();
-  renderMessages();
+  displayMessages();
 }
 
 sendBtn.addEventListener("click", sendMessage);
-userInput.addEventListener("keypress", e => e.key === "Enter" && sendMessage());
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+newChatBtn.addEventListener("click", newChat);
 
-searchInput.addEventListener("input", () => renderChatList(searchInput.value));
-
-// 🎙️ Speech-to-text for search input
+/* ==== Speech to Text ==== */
 micBtn.addEventListener("click", () => {
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
   recognition.lang = "en-US";
   recognition.start();
-  recognition.onresult = e => {
-    userInput.value = e.results[0][0].transcript;
+  recognition.onresult = (event) => {
+    userInput.value = event.results[0][0].transcript;
   };
 });
 
-// 📎 Handle file upload
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const chat = chats.find(c => c.id === activeChatId);
-  chat.messages.push({ sender: "user", text: `📎 Uploaded: ${file.name}` });
-  saveChats();
-  renderMessages();
+/* ==== File Upload ==== */
+fileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    chats[currentChat].messages.push({
+      sender: "user",
+      text: `📎 Uploaded: ${file.name}`,
+    });
+    displayMessages();
+  }
 });
 
-renderChatList();
-if (chats.length) {
-  activeChatId = chats[0].id;
-  renderMessages();
-}
+loadChats();
+displayMessages();
