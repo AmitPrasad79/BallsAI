@@ -9,6 +9,13 @@ const fileInput = document.getElementById("fileInput");
 let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
 let currentChat = 0;
 
+// ✅ Create a default chat automatically if none exist
+if (chats.length === 0) {
+  chats.push({ title: "New Chat", messages: [] });
+  currentChat = 0;
+  saveChats();
+}
+
 function saveChats() {
   localStorage.setItem("ballsAI_chats", JSON.stringify(chats));
 }
@@ -46,7 +53,15 @@ function newChat() {
 function deleteChat(index, e) {
   e.stopPropagation();
   chats.splice(index, 1);
-  if (currentChat >= chats.length) currentChat = chats.length - 1;
+
+  // ✅ If all chats deleted, recreate default chat
+  if (chats.length === 0) {
+    chats.push({ title: "New Chat", messages: [] });
+    currentChat = 0;
+  } else if (currentChat >= chats.length) {
+    currentChat = chats.length - 1;
+  }
+
   saveChats();
   loadChats();
   displayMessages();
@@ -55,6 +70,7 @@ function deleteChat(index, e) {
 function displayMessages() {
   chatWindow.innerHTML = "";
   if (!chats[currentChat]) return;
+
   chats[currentChat].messages.forEach((msg) => {
     const div = document.createElement("div");
     div.className = `message ${msg.sender}`;
@@ -66,26 +82,31 @@ function displayMessages() {
 
 async function sendMessage() {
   const text = userInput.value.trim();
-  if (!text) return;
+  if (!text || !chats[currentChat]) return;
 
   const userMsg = { sender: "user", text };
   chats[currentChat].messages.push(userMsg);
   displayMessages();
   userInput.value = "";
 
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: text }),
-  });
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
 
-  const data = await res.json();
-  const reply = data.reply || "No reply from model.";
+    const data = await res.json();
+    const reply = data.reply || "No reply from model.";
 
-  chats[currentChat].messages.push({ sender: "bot", text: reply });
-  chats[currentChat].title = text.slice(0, 20) + (text.length > 20 ? "..." : "");
-  saveChats();
-  displayMessages();
+    chats[currentChat].messages.push({ sender: "bot", text: reply });
+    chats[currentChat].title = text.slice(0, 20) + (text.length > 20 ? "..." : "");
+    saveChats();
+    displayMessages();
+  } catch (err) {
+    chats[currentChat].messages.push({ sender: "bot", text: "⚠️ Server not responding." });
+    displayMessages();
+  }
 }
 
 sendBtn.addEventListener("click", sendMessage);
@@ -105,14 +126,12 @@ micBtn.addEventListener("click", () => {
 });
 
 /* ==== File Upload ==== */
+// ✅ Stop auto-sending uploads, show file name only
 fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
-  if (file) {
-    chats[currentChat].messages.push({
-      sender: "user",
-      text: `📎 Uploaded: ${file.name}`,
-    });
-    displayMessages();
+  if (file && chats[currentChat]) {
+    const filename = file.name;
+    userInput.value += ` [Attached: ${filename}]`;
   }
 });
 
