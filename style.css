@@ -283,10 +283,3 @@ body {
   }
 }
 
-@media (max-width: 1000px) {
-  #chatBox {
-    left: 50%;
-    width: 90%;
-  }
-}
-
