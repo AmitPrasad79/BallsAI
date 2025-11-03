@@ -242,10 +242,10 @@ body {
   justify-content: center;
   position: fixed;
   bottom: 20px;
-  left: calc(25% + 50%); /* Adjusts based on sidebar width */
+  left: calc(260px + 50%); /* Sidebar width + center alignment */
   transform: translateX(-50%);
-  width: 70%;
-  max-width: 800px;
+  width: 65%;
+  max-width: 850px;
   background: #121416;
   border: 1px solid #2b2e33;
   border-radius: 50px;
