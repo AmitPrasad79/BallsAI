@@ -2,88 +2,92 @@
 
 body {
   margin: 0;
+  font-family: "Poppins", sans-serif;
   background: #0b0c10;
   color: #fff;
-  font-family: "Poppins", sans-serif;
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
+/* Structure */
+#container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
 /* Sidebar */
 #sidebar {
-  width: 260px;
+  width: 280px;
   background: #111418;
-  border-right: 1px solid #1f2833;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  border-right: 1px solid #1f2833;
+  position: fixed;
+  height: 100%;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+}
+
+.logo-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  animation: fadeIn 0.8s ease;
 }
 
 #sidebar h2 {
-  text-align: center;
   color: #66fcf1;
-  margin-bottom: 10px;
+  font-size: 1.3em;
+  margin: 0;
 }
 
 #newChatBtn {
-  width: 100%;
   background: #45a29e;
   border: none;
-  padding: 10px;
   border-radius: 8px;
-  color: #fff;
+  padding: 10px;
+  color: #000;
+  font-weight: 600;
   cursor: pointer;
-  margin-bottom: 15px;
   transition: 0.2s;
 }
 
 #newChatBtn:hover {
   background: #66fcf1;
-  color: #000;
 }
 
-/* Search */
 .search-box {
-  display: flex;
-  gap: 5px;
+  margin-top: 15px;
 }
 
 #searchInput {
-  flex: 1;
+  width: 100%;
   padding: 8px;
   border-radius: 6px;
   border: none;
   outline: none;
-}
-
-#micBtn {
-  border: none;
   background: #1f2833;
-  color: #66fcf1;
-  border-radius: 6px;
-  padding: 6px 10px;
-  cursor: pointer;
+  color: #fff;
 }
 
-#micBtn:hover {
-  background: #45a29e;
-}
-
-/* Chat history */
 #chatHistory {
-  margin-top: 10px;
-  flex-grow: 1;
+  margin-top: 15px;
   overflow-y: auto;
+  flex-grow: 1;
 }
 
 .chat-item {
-  padding: 10px;
   background: #1f2833;
+  padding: 10px;
+  border-radius: 8px;
   margin-bottom: 8px;
-  border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -93,48 +97,64 @@ body {
   color: #000;
 }
 
-/* Main */
-#main {
-  flex-grow: 1;
+/* Divider */
+#divider {
+  width: 1px;
+  background: #1f2833;
+  margin-left: 280px;
+}
+
+/* Main Chat Area */
+#chatArea {
+  margin-left: 281px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  position: relative;
+  justify-content: space-between;
+  height: 100vh;
 }
 
 #chatWindow {
-  flex-grow: 1;
-  padding: 20px;
+  flex: 1;
   overflow-y: auto;
-  animation: fadeIn 0.6s ease;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
-  margin-bottom: 15px;
   max-width: 70%;
-  padding: 10px 15px;
-  border-radius: 10px;
-  line-height: 1.5;
-  animation: floatUp 0.4s ease;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  animation: floatUp 0.3s ease;
 }
 
 .user {
   background: #45a29e;
-  align-self: flex-end;
   color: #000;
-  margin-left: auto;
+  align-self: flex-end;
 }
 
 .ai {
   background: #1f2833;
-  color: #fff;
   align-self: flex-start;
 }
 
-/* Chat input */
+/* Input area */
 #chatBox {
   display: flex;
+  align-items: center;
+  padding: 12px;
   border-top: 1px solid #1f2833;
-  padding: 10px;
+  background: #0b0c10;
+}
+
+.attach {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #66fcf1;
 }
 
 #userInput {
@@ -147,27 +167,28 @@ body {
   color: #fff;
 }
 
-#sendBtn {
+#sendBtn, #micBtn {
   background: #45a29e;
   border: none;
   border-radius: 8px;
-  padding: 10px 16px;
-  color: #000;
+  padding: 10px 14px;
   margin-left: 8px;
   cursor: pointer;
   transition: 0.2s;
 }
 
-#sendBtn:hover {
+#sendBtn:hover, #micBtn:hover {
   background: #66fcf1;
+  color: #000;
+}
+
+/* Animations */
+@keyframes floatUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes floatUp {
-  from { transform: translateY(15px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
