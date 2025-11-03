@@ -287,19 +287,25 @@ body {
   display: none !important;
 }
 
-#bgCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.35;
-}
-
+/* Make the falling logos appear only behind the chat area */
 #chatArea {
   position: relative;
   z-index: 2;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* Position the falling balls canvas to cover chat area only */
+#bgCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35; /* 30–40% visibility */
+  z-index: 1;
+  pointer-events: none;
+  background: transparent;
 }
 
 .sidebar,
