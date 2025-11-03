@@ -283,3 +283,22 @@ body {
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background: transparent;
+}
+
+body, header, main, footer, .modal {
+  position: relative;
+  z-index: 2;
+}
