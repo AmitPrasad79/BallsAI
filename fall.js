@@ -7,9 +7,14 @@ function resizeBg() {
 
   bgCanvas.width = rect.width;
   bgCanvas.height = rect.height;
-  bgCanvas.style.position = "absolute";
+
+  // Position the canvas exactly over the chat area
+  bgCanvas.style.position = "fixed";
   bgCanvas.style.left = rect.left + "px";
   bgCanvas.style.top = rect.top + "px";
+  bgCanvas.style.pointerEvents = "none";
+  bgCanvas.style.opacity = "0.35"; // soft opacity
+  bgCanvas.style.zIndex = "1";
 }
 
 window.addEventListener("resize", resizeBg);
