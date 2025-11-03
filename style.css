@@ -319,3 +319,18 @@ body, header, main, footer, .modal {
   position: relative;
   z-index: 2;
 }
+
+#chatArea {
+  position: relative;
+  flex: 1;
+  background: transparent;
+  z-index: 2;
+  overflow: hidden;
+}
+
+#bgCanvas {
+  position: fixed;
+  background: transparent;
+  pointer-events: none;
+}
+
