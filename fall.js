@@ -7,10 +7,13 @@ function resizeBg() {
 
   bgCanvas.width = rect.width;
   bgCanvas.height = rect.height;
+  bgCanvas.style.position = "absolute";
   bgCanvas.style.left = rect.left + "px";
   bgCanvas.style.top = rect.top + "px";
 }
+
 window.addEventListener("resize", resizeBg);
+window.addEventListener("scroll", resizeBg);
 resizeBg();
 
 const img = new Image();
