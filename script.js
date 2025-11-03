@@ -9,6 +9,11 @@ const fileInput = document.getElementById("fileInput");
 let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
 let currentChat = 0;
 
+// Sidebar toggle
+document.getElementById("toggleSidebar").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("hide");
+});
+
 // ✅ Create a default chat automatically if none exist
 if (chats.length === 0) {
   chats.push({ title: "New Chat", messages: [] });
