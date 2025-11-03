@@ -242,7 +242,7 @@ body {
   justify-content: center;
   position: fixed;
   bottom: 20px;
-  left: calc(260px + 50%); /* Sidebar width + center alignment */
+  left: calc(260px + (100% - 260px) / 2); /* perfectly centers inside main chat area */
   transform: translateX(-50%);
   width: 65%;
   max-width: 850px;
