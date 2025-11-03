@@ -325,4 +325,60 @@ body, header, main, footer, .modal {
   overflow: hidden;
 }
 
+/* ===== Sidebar Toggle Button ===== */
+#toggleSidebar {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 40px;
+  height: 32px;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 20;
+  cursor: pointer;
+}
+
+#toggleSidebar span {
+  height: 4px;
+  background: #00c3a6;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+/* Sidebar Hidden */
+#sidebar.hide {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+/* Adjust for mobile */
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    z-index: 15;
+    background: #141414;
+    transition: transform 0.3s ease;
+  }
+
+  #divider {
+    display: none;
+  }
+
+  #chatArea {
+    padding: 70px 10px 90px;
+  }
+
+  .logo {
+    width: 45px;
+    height: auto;
+  }
+}
+
 
