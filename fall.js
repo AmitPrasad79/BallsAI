@@ -2,8 +2,13 @@ const bgCanvas = document.getElementById("bgCanvas");
 const ctx = bgCanvas.getContext("2d");
 
 function resizeBg() {
-  bgCanvas.width = window.innerWidth;
-  bgCanvas.height = window.innerHeight;
+  const chatArea = document.getElementById("chatArea");
+  const rect = chatArea.getBoundingClientRect();
+
+  bgCanvas.width = rect.width;
+  bgCanvas.height = rect.height;
+  bgCanvas.style.left = rect.left + "px";
+  bgCanvas.style.top = rect.top + "px";
 }
 window.addEventListener("resize", resizeBg);
 resizeBg();
