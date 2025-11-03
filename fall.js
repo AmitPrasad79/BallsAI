@@ -13,7 +13,6 @@ function resizeBg() {
   bgCanvas.style.left = rect.left + "px";
   bgCanvas.style.top = rect.top + "px";
   bgCanvas.style.pointerEvents = "none";
-  bgCanvas.style.opacity = "0.35"; // soft opacity
   bgCanvas.style.zIndex = "1";
 }
 
