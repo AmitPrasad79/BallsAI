@@ -288,14 +288,22 @@ body {
 }
 
 #bgCanvas {
-  position: fixed;
+  position: absolute;
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  left: 262px; /* same as your sidebar + divider width */
+  width: calc(100% - 262px);
+  height: 100%;
   z-index: 0;
   pointer-events: none;
   background: transparent;
+  opacity: 0.35; /* around 35% opacity */
+}
+
+#chatArea,
+#chatWindow,
+#chatBox {
+  position: relative;
+  z-index: 2;
 }
 
 body, header, main, footer, .modal {
