@@ -219,4 +219,32 @@ body { background: #0e0f10; color: #fff; overflow: hidden; }
   color: #111;
 }
 
+.chat-item {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1d1e20;
+  color: #fff;
+  padding: 8px 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.chat-item:hover {
+  background: #22a69933;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #ff5f5f;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+.delete-btn:hover {
+  color: #ff2e2e;
+}
 
