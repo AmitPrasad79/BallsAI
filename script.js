@@ -144,10 +144,20 @@ fileInput.addEventListener("change", (event) => {
 const toggleBtn = document.getElementById("toggleSidebar");
 const sidebar = document.getElementById("sidebar");
 const divider = document.getElementById("divider");
+const chatArea = document.getElementById("chatArea");
 
 toggleBtn.addEventListener("click", () => {
   sidebar.classList.toggle("hide");
   divider.classList.toggle("hide");
+
+  // When sidebar hides, center chat area
+  if (sidebar.classList.contains("hide")) {
+    chatArea.style.margin = "0 auto";
+    chatArea.style.width = "80%";
+  } else {
+    chatArea.style.margin = "0";
+    chatArea.style.width = "auto";
+  }
 });
 
 loadChats();
