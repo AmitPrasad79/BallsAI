@@ -28,14 +28,31 @@ document.addEventListener("DOMContentLoaded", () => {
     chats.forEach((chat, index) => {
       const div = document.createElement("div");
       div.className = "chat-item";
-      div.innerHTML = `<span>${chat.title || "New Chat"}</span>`;
-      div.onclick = () => {
-        currentChat = index;
-        displayMessages();
+
+      const title = document.createElement("span");
+      title.textContent = chat.title || "New Chat";
+      title.onclick = () => { currentChat = index; displayMessages(); };
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "🗑️";
+      delBtn.className = "delete-btn";
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (confirm("Delete this chat?")) {
+          chats.splice(index, 1);
+          if (currentChat >= chats.length) currentChat = chats.length - 1;
+          saveChats();
+          loadChats();
+          displayMessages();
+        }
       };
+
+      div.appendChild(title);
+      div.appendChild(delBtn);
       chatHistory.appendChild(div);
     });
   }
+
 
   function displayMessages() {
     chatWindow.innerHTML = "";
