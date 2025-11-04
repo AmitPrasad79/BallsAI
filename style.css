@@ -188,3 +188,46 @@ body {
   .hamburger { width:36px; height:34px; font-size:16px; }
   #chatBox { width:96%; bottom:10px; }
 }
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background-color: #141517;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+  border-right: 2px solid #202224;
+  z-index: 200; /* ✅ increased so it’s always visible above canvas */
+  transition: transform 0.35s ease;
+}
+
+/* ===== DIVIDER ===== */
+#divider {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: 3px;
+  height: 100vh;
+  background: linear-gradient(to bottom, #22a699, #202224);
+  box-shadow: 0 0 6px #22a699;
+  z-index: 180; /* ✅ below sidebar but above canvas */
+  transition: transform 0.35s ease, opacity 0.3s ease;
+}
+
+/* ===== BACKGROUND BALLS ===== */
+#bgCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 1; /* ✅ keep very low so it stays behind everything */
+  transition: all 0.5s ease;
+}
