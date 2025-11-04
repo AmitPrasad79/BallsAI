@@ -525,4 +525,67 @@ body, header, main, footer, .modal {
   height: auto;
 }
 
+/* Sidebar header (logo + toggle) */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.hamburger {
+  background: none;
+  border: 2px solid #00c2a8;
+  color: #00c2a8;
+  font-size: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: background 0.3s;
+}
+
+.hamburger:hover {
+  background: #00c2a8;
+  color: #111;
+}
+
+/* Sidebar transition */
+#sidebar {
+  width: 230px;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+#sidebar.closed {
+  width: 0;
+  opacity: 0;
+}
+
+/* Divider transition */
+#divider {
+  width: 2px;
+  background-color: #00c2a8;
+  transition: margin-left 0.3s ease, opacity 0.3s ease;
+}
+
+#divider.closed {
+  opacity: 0;
+  margin-left: -2px;
+}
+
+/* Chat area expands when sidebar is hidden */
+#container.sidebar-closed #chatArea {
+  margin-left: 0;
+  width: 100%;
+}
+
+#chatArea {
+  transition: all 0.3s ease;
+}
 
