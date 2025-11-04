@@ -145,6 +145,7 @@ const sidebar = document.getElementById('sidebar');
 const divider = document.getElementById('divider');
 const container = document.getElementById('container');
 const toggleBtn = document.querySelector('.hamburger');
+const bgCanvas = document.getElementById('bgCanvas');
 
 let floating = document.getElementById('floatingToggle');
 if (!floating) {
@@ -159,6 +160,8 @@ function closeSidebar() {
   divider.classList.add('closed');
   container.classList.add('sidebar-closed');
   floating.style.display = 'flex';
+  bgCanvas.classList.remove('shrunk');
+  bgCanvas.classList.add('expanded');
 }
 
 function openSidebar() {
@@ -166,6 +169,8 @@ function openSidebar() {
   divider.classList.remove('closed');
   container.classList.remove('sidebar-closed');
   floating.style.display = 'none';
+  bgCanvas.classList.remove('expanded');
+  bgCanvas.classList.add('shrunk');
 }
 
 toggleBtn.addEventListener('click', () => {
@@ -174,6 +179,12 @@ toggleBtn.addEventListener('click', () => {
 });
 
 floating.addEventListener('click', () => openSidebar());
+
+// Initialize bgCanvas size on load
+window.addEventListener('load', () => {
+  if (sidebar.classList.contains('closed')) bgCanvas.classList.add('expanded');
+  else bgCanvas.classList.add('shrunk');
+});
 
 
 loadChats();
