@@ -441,3 +441,88 @@ body, header, main, footer, .modal {
   }
 }
 
+/* ===== Sidebar ===== */
+#sidebar {
+  width: 260px;
+  background: #1e1f22;
+  color: #fff;
+  height: 100vh;
+  position: relative;
+  transition: transform 0.4s ease;
+  z-index: 20;
+}
+
+/* Sidebar hidden */
+#sidebar.hide {
+  transform: translateX(-260px);
+}
+
+/* ===== Divider ===== */
+#divider {
+  width: 2px;
+  background: #22a699;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+#divider.hide {
+  transform: translateX(-260px);
+  opacity: 0;
+}
+
+/* ===== Toggle (Hamburger) Button ===== */
+#toggleSidebar {
+  position: absolute;
+  top: 18px;
+  right: -45px;
+  width: 38px;
+  height: 32px;
+  background: #141517;
+  border: 2px solid #22a699;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  z-index: 25;
+  transition: all 0.3s ease;
+}
+
+#toggleSidebar span {
+  height: 3px;
+  width: 60%;
+  background: #22a699;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* ===== Chat Area ===== */
+#chatArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: margin-left 0.4s ease;
+  margin-left: 0;
+}
+
+/* When sidebar is hidden, center chat area */
+#sidebar.hide ~ #divider ~ #chatArea {
+  margin-left: 130px; /* centers roughly */
+  width: calc(100% - 130px);
+}
+
+.logo-box {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.logo {
+  width: 60px;
+  height: auto;
+}
+
+
