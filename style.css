@@ -56,22 +56,6 @@ body {
   object-fit: contain;
 }
 
-.hamburger {
-  background: none;
-  border: 2px solid #22a699;
-  color: #22a699;
-  font-size: 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  padding: 6px 10px;
-  transition: all 0.3s ease;
-}
-
-.hamburger:hover {
-  background: #22a699;
-  color: #111;
-}
-
 /* New chat button */
 #newChatBtn {
   width: 90%;
@@ -292,6 +276,27 @@ body {
   pointer-events: none;
   z-index: 1;
 }
+
+.hamburger, #floatingToggle {
+  width: 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #141517;
+  border: 2px solid #22a699;
+  color: #22a699;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover, #floatingToggle:hover {
+  background: #22a699;
+  color: #111;
+}
+
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
