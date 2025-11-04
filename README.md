@@ -12,16 +12,16 @@
 ## ✨ Overview
 
 **Balls AI** is a clean, futuristic desktop-only chat interface.  
-It features a collapsible sidebar, glowing accents, smooth transitions, and animated backgrounds — built for clarity and simplicity.
+It features a collapsible sidebar, glowing accents, smooth transitions, and animated backgrounds built for clarity and simplicity.
 
 ---
 
 ## 💻 Features
 
 - 🧠 **AI-style chat interface** (customizable backend)
-- 🗂️ **Sidebar chat manager** – create, open, and delete chats
-- 💾 **Local storage** – persistent chat history
-- 🎤 **Speech recognition** – use your voice (via Web Speech API)
+- 🗂️ **Sidebar chat manager** - create, open, and delete chats
+- 💾 **Local storage** - persistent chat history
+- 🎤 **Speech recognition** - use your voice (via Web Speech API)
 - 📎 **File attachment option**
 - 🌌 **Animated particle background**
 - 🖥️ **Desktop-optimized layout only**
@@ -37,9 +37,3 @@ It features a collapsible sidebar, glowing accents, smooth transitions, and anim
 | **Extras** | Web Speech API |
 
 ---
-
-## 🚀 Installation
-
-1. **Clone this repository**
-   ```bash
-   git clone https://github.com/yourusername/balls-ai.git
