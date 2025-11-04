@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleSidebar = document.getElementById("toggleSidebar");
   const bgCanvas = document.getElementById("bgCanvas");
   const container = document.getElementById("container");
+  const chatBox = document.getElementById("chatBox");
 
   const chatWindow = document.getElementById("chatWindow");
   const userInput = document.getElementById("userInput");
@@ -18,7 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
   let currentChat = 0;
 
-  function saveChats() { localStorage.setItem("ballsAI_chats", JSON.stringify(chats)); }
+  function saveChats() {
+    localStorage.setItem("ballsAI_chats", JSON.stringify(chats));
+  }
 
   function loadChats() {
     chatHistory.innerHTML = "";
@@ -26,7 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement("div");
       div.className = "chat-item";
       div.innerHTML = `<span>${chat.title || "New Chat"}</span>`;
-      div.onclick = () => { currentChat = index; displayMessages(); };
+      div.onclick = () => {
+        currentChat = index;
+        displayMessages();
+      };
       chatHistory.appendChild(div);
     });
   }
@@ -61,14 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const reply = data.reply || "No reply from model.";
       chats[currentChat].messages.push({ sender: "bot", text: reply });
     } catch {
-      chats[currentChat].messages.push({ sender: "bot", text: "⚠️ Server not responding." });
+      chats[currentChat].messages.push({
+        sender: "bot",
+        text: "⚠️ Server not responding.",
+      });
     }
     saveChats();
     displayMessages();
   }
 
   sendBtn.onclick = sendMessage;
-  userInput.addEventListener("keydown", e => { if (e.key === "Enter") sendMessage(); });
+  userInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
   newChatBtn.onclick = () => {
     chats.push({ title: "New Chat", messages: [] });
     currentChat = chats.length - 1;
@@ -79,10 +91,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   micBtn.onclick = () => {
     try {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      const recognition =
+        new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = "en-US";
       recognition.start();
-      recognition.onresult = (event) => {
+      recognition.onresult = event => {
         userInput.value = event.results[0][0].transcript;
       };
     } catch {
@@ -90,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  fileInput.onchange = (e) => {
+  fileInput.onchange = e => {
     const file = e.target.files[0];
     if (file) userInput.value += ` [Attached: ${file.name}]`;
   };
@@ -101,6 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
     divider.classList.remove("hidden");
     bgCanvas.classList.remove("expanded");
     bgCanvas.classList.add("shrunk");
+    floatingToggle.style.display = "none";
+    adjustChatBox(true);
   }
 
   function closeSidebar() {
@@ -108,10 +123,23 @@ document.addEventListener("DOMContentLoaded", () => {
     divider.classList.add("hidden");
     bgCanvas.classList.remove("shrunk");
     bgCanvas.classList.add("expanded");
+    floatingToggle.style.display = "flex";
+    adjustChatBox(false);
   }
 
   toggleSidebar.onclick = () => closeSidebar();
   floatingToggle.onclick = () => openSidebar();
+
+  // ===== Chat box position adjustment =====
+  function adjustChatBox(isSidebarOpen) {
+    if (isSidebarOpen) {
+      chatBox.style.width = "60%";
+      chatBox.style.left = "calc(50% + 130px)"; // move slightly to right to balance sidebar
+    } else {
+      chatBox.style.width = "70%";
+      chatBox.style.left = "50%";
+    }
+  }
 
   function handleResize() {
     if (window.innerWidth <= 768) {
@@ -124,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", handleResize);
   handleResize();
 
-  // Init
+  // ===== INIT =====
   if (chats.length === 0) chats.push({ title: "New Chat", messages: [] });
   loadChats();
   displayMessages();
