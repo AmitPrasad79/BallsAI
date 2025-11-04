@@ -14,43 +14,67 @@ body {
   overflow: hidden;
 }
 
+/* ===== CONTAINER ===== */
 #container {
   display: flex;
   height: 100vh;
   width: 100%;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-/* ===== Sidebar ===== */
+/* ===== SIDEBAR ===== */
 #sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 260px;
+  height: 100vh;
   background-color: #141517;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 10px;
+  padding-top: 15px;
   border-right: 2px solid #202224;
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  z-index: 30;
+  transition: transform 0.35s ease;
 }
 
-.logo-box {
+/* Sidebar header */
+.sidebar-header {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
   margin-bottom: 15px;
 }
 
 .logo {
-  width: 90px;
-  height: 90px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: contain;
-  animation: fadeIn 0.6s ease;
 }
 
+.hamburger {
+  background: none;
+  border: 2px solid #22a699;
+  color: #22a699;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background: #22a699;
+  color: #111;
+}
+
+/* New chat button */
 #newChatBtn {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   background-color: #22a699;
   border: none;
@@ -59,14 +83,16 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: 0.2s ease;
+  margin-top: 10px;
 }
 
 #newChatBtn:hover {
   background-color: #1f9186;
 }
 
+/* Search */
 .search-box {
-  width: 100%;
+  width: 90%;
   margin-top: 15px;
 }
 
@@ -79,9 +105,10 @@ body {
   color: #dcdcdc;
 }
 
+/* Chat history */
 #chatHistory {
   margin-top: 15px;
-  width: 100%;
+  width: 90%;
   flex-grow: 1;
   overflow-y: auto;
 }
@@ -110,23 +137,32 @@ body {
   cursor: pointer;
 }
 
-/* ===== Divider ===== */
+/* ===== DIVIDER ===== */
 #divider {
-  width: 2px;
-  background-color: #202224;
-  margin-left: 260px;
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: 3px;
+  height: 100vh;
+  background: linear-gradient(to bottom, #22a699, #202224);
+  box-shadow: 0 0 6px #22a699;
+  z-index: 25;
+  transition: transform 0.35s ease, opacity 0.3s ease;
 }
 
-/* ===== Chat Area ===== */
+/* ===== CHAT AREA ===== */
 #chatArea {
-  flex-grow: 1;
-  margin-left: 262px;
+  flex: 1;
+  margin-left: 260px;
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: #0e0f10;
+  background-color: transparent;
+  transition: margin-left 0.35s ease;
+  z-index: 10;
 }
 
+/* ===== CHAT WINDOW ===== */
 #chatWindow {
   flex-grow: 1;
   padding: 25px;
@@ -136,7 +172,7 @@ body {
   gap: 10px;
 }
 
-/* ===== Message Styling ===== */
+/* ===== MESSAGE STYLING ===== */
 .message {
   max-width: 70%;
   padding: 10px 15px;
@@ -158,7 +194,7 @@ body {
   color: #e3e3e3;
 }
 
-/* ===== Chat Box ===== */
+/* ===== CHAT BOX ===== */
 #chatBox {
   position: absolute;
   bottom: 20px;
@@ -202,485 +238,80 @@ body {
   font-size: 18px;
 }
 
-/* ===== Animations ===== */
+/* ===== ANIMATIONS ===== */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+/* ===== SIDEBAR HIDE STATE ===== */
+#sidebar.closed {
+  transform: translateX(-260px);
 }
 
-/* ===== Sidebar ===== */
-#sidebar {
-  width: 260px;
-  background-color: #181a1e;  /* brighter gray-blue tone */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 10px;
-  border-right: 2px solid #2b2e33; /* stronger visible line */
+#divider.closed {
+  transform: translateX(-260px);
+  opacity: 0;
+}
+
+#container.sidebar-closed #chatArea {
+  margin-left: 0;
+}
+
+/* ===== FLOATING TOGGLE ===== */
+#floatingToggle {
   position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-}
-
-/* ===== Divider ===== */
-#divider {
-  width: 2px;
-  background: linear-gradient(to bottom, #22a699, #2b2e33);
-  box-shadow: 0 0 6px #22a699;
-  margin-left: 260px;
-}
-
-#chatBox {
-  display: flex;
+  top: 15px;
+  left: 15px;
+  width: 40px;
+  height: 36px;
+  background: #141517;
+  border: 2px solid #22a699;
+  color: #22a699;
+  border-radius: 8px;
+  display: none;
+  z-index: 60;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  bottom: 20px;
-  left: calc(260px + (100% - 260px) / 2); /* perfectly centers inside main chat area */
-  transform: translateX(-50%);
-  width: 65%;
-  max-width: 850px;
-  background: #121416;
-  border: 1px solid #2b2e33;
-  border-radius: 50px;
-  padding: 10px 15px;
-  box-shadow: 0 0 10px rgba(34, 166, 153, 0.2);
-  transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    width: 70px;
-    padding: 10px 5px;
-    align-items: center;
-  }
-
-  .logo-box img {
-    width: 40px;
-    height: 40px;
-  }
-
-  #newChatBtn,
-  .search-box input {
-    width: 90%;
-    font-size: 0;
-    padding: 8px;
-  }
-
-  #divider {
-    display: none; /* Hide line on small screens */
-  }
-
-  #chatBox {
-    width: 95%;
-    bottom: 15px;
-  }
+#floatingToggle:hover {
+  background: #22a699;
+  color: #111;
 }
 
-.hidden {
-  display: none !important;
-}
-
-/* Make the falling logos appear only behind the chat area */
-#chatArea {
-  position: relative;
-  z-index: 2;
-  background: transparent;
-  overflow: hidden;
-}
-
-/* Position the falling balls canvas to cover chat area only */
+/* ===== BACKGROUND BALLS ===== */
 #bgCanvas {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   background: transparent;
   pointer-events: none;
   z-index: 1;
 }
 
-.sidebar,
-.divider {
-  z-index: 3;
-  position: relative;
-}
-
-
-body, header, main, footer, .modal {
-  position: relative;
-  z-index: 2;
-}
-
-#chatArea {
-  position: relative;
-  flex: 1;
-  background: transparent;
-  z-index: 2;
-  overflow: hidden;
-}
-
-/* ===== Sidebar Toggle Button ===== */
-#toggleSidebar {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  width: 40px;
-  height: 32px;
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 20;
-  cursor: pointer;
-}
-
-#toggleSidebar span {
-  height: 4px;
-  background: #00c3a6;
-  border-radius: 2px;
-  transition: 0.3s ease;
-}
-
-/* Sidebar Hidden */
-#sidebar.hide {
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-}
-
-/* Adjust for mobile */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   #sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 260px;
-    z-index: 15;
-    background: #141414;
-    transition: transform 0.3s ease;
+    width: 220px;
   }
 
   #divider {
-    display: none;
+    left: 220px;
   }
 
-  #chatArea {
-    padding: 70px 10px 90px;
+  #sidebar.closed {
+    transform: translateX(-220px);
   }
 
-  .logo {
-    width: 45px;
-    height: auto;
+  #divider.closed {
+    transform: translateX(-220px);
+  }
+
+  #chatBox {
+    width: 90%;
   }
 }
-
-/* ===== Sidebar Toggle Button ===== */
-#toggleSidebar {
-  position: absolute;
-  top: 18px;
-  right: -45px;
-  width: 38px;
-  height: 32px;
-  background: #141517;
-  border: 2px solid #22a699;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  z-index: 25;
-  transition: all 0.3s ease;
-}
-
-#toggleSidebar span {
-  height: 3px;
-  width: 60%;
-  background: #22a699;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-/* Move sidebar and divider together when hidden */
-#sidebar.hide {
-  transform: translateX(-260px);
-  transition: transform 0.4s ease;
-}
-
-#divider.hide {
-  transform: translateX(-260px);
-  transition: transform 0.4s ease;
-}
-
-/* Make sure logo is small and left aligned */
-.logo-box {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  padding-left: 10px;
-}
-
-.logo {
-  width: 60px;
-  height: auto;
-}
-
-/* Mobile fix */
-@media (max-width: 768px) {
-  #toggleSidebar {
-    right: -40px;
-    top: 15px;
-  }
-}
-
-/* ===== Sidebar ===== */
-#sidebar {
-  width: 260px;
-  background: #1e1f22;
-  color: #fff;
-  height: 100vh;
-  position: relative;
-  transition: transform 0.4s ease;
-  z-index: 20;
-}
-
-/* Sidebar hidden */
-#sidebar.hide {
-  transform: translateX(-260px);
-}
-
-/* ===== Divider ===== */
-#divider {
-  width: 2px;
-  background: #22a699;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-#divider.hide {
-  transform: translateX(-260px);
-  opacity: 0;
-}
-
-/* ===== Toggle (Hamburger) Button ===== */
-#toggleSidebar {
-  position: absolute;
-  top: 18px;
-  right: -45px;
-  width: 38px;
-  height: 32px;
-  background: #141517;
-  border: 2px solid #22a699;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  z-index: 25;
-  transition: all 0.3s ease;
-}
-
-#toggleSidebar span {
-  height: 3px;
-  width: 60%;
-  background: #22a699;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-/* ===== Chat Area ===== */
-#chatArea {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: margin-left 0.4s ease;
-  margin-left: 0;
-}
-
-/* When sidebar is hidden, center chat area */
-#sidebar.hide ~ #divider ~ #chatArea {
-  margin-left: 130px; /* centers roughly */
-  width: calc(100% - 130px);
-}
-
-.logo-box {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  padding-left: 10px;
-}
-
-.logo {
-  width: 60px;
-  height: auto;
-}
-
-/* Sidebar header (logo + toggle) */
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px;
-}
-
-.logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
-.hamburger {
-  background: none;
-  border: 2px solid #00c2a8;
-  color: #00c2a8;
-  font-size: 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: background 0.3s;
-}
-
-.hamburger:hover {
-  background: #00c2a8;
-  color: #111;
-}
-
-/* Sidebar transition */
-#sidebar {
-  width: 230px;
-  transition: width 0.3s ease, opacity 0.3s ease;
-  overflow: hidden;
-}
-
-#sidebar.closed {
-  width: 0;
-  opacity: 0;
-}
-
-/* Divider transition */
-#divider {
-  width: 2px;
-  background-color: #00c2a8;
-  transition: margin-left 0.3s ease, opacity 0.3s ease;
-}
-
-#divider.closed {
-  opacity: 0;
-  margin-left: -2px;
-}
-
-/* Chat area expands when sidebar is hidden */
-#container.sidebar-closed #chatArea {
-  margin-left: 0;
-  width: 100%;
-}
-
-#chatArea {
-  transition: all 0.3s ease;
-}
-
-/* Sidebar header (logo + toggle) */
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-}
-
-.logo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.hamburger {
-  background: none;
-  border: 2px solid #00c2a8;
-  color: #00c2a8;
-  font-size: 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: all 0.3s ease;
-}
-
-.hamburger:hover {
-  background: #00c2a8;
-  color: #111;
-}
-
-/* Sidebar and divider positioning */
-#container {
-  display: flex;
-  transition: all 0.3s ease;
-}
-
-#sidebar {
-  width: 230px;
-  background: #1b1d21;
-  height: 100vh;
-  transition: width 0.3s ease, opacity 0.3s ease;
-  overflow: hidden;
-  position: relative;
-  z-index: 10;
-}
-
-#divider {
-  width: 2px;
-  background-color: #00c2a8;
-  transition: transform 0.3s ease;
-  z-index: 5;
-}
-
-/* Sidebar closed */
-#sidebar.closed {
-  width: 0;
-  opacity: 0;
-}
-
-#divider.closed {
-  transform: translateX(-232px);
-}
-
-/* Chat area expansion */
-#chatArea {
-  flex: 1;
-  transition: all 0.3s ease;
-}
-
-#container.sidebar-closed #chatArea {
-  width: 100%;
-  margin-left: 0;
-}
-
-/* Floating hamburger when sidebar closed */
-#floatingToggle {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  background: none;
-  border: 2px solid #00c2a8;
-  color: #00c2a8;
-  font-size: 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  padding: 4px 8px;
-  display: none;
-  z-index: 50;
-}
-
-#floatingToggle:hover {
-  background: #00c2a8;
-  color: #111;
-}
-
