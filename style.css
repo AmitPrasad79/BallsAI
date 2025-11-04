@@ -277,6 +277,18 @@ body {
   z-index: 1;
 }
 
+#bgCanvas.expanded {
+  left: 0;
+  width: 100vw;
+  transition: all 0.5s ease;
+}
+
+#bgCanvas.shrunk {
+  left: 260px;
+  width: calc(100vw - 260px);
+  transition: all 0.5s ease;
+}
+
 .hamburger, #floatingToggle {
   width: 40px;
   height: 36px;
