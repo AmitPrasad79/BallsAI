@@ -1,131 +1,84 @@
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
-  const divider = document.getElementById("divider");
-  const floatingToggle = document.getElementById("floatingToggle");
   const toggleSidebar = document.getElementById("toggleSidebar");
-  const bgCanvas = document.getElementById("bgCanvas");
+  const floatingToggle = document.getElementById("floatingToggle");
   const container = document.getElementById("container");
+  const chatBox = document.getElementById("chatBox");
+  const divider = document.getElementById("divider");
 
-  const chatWindow = document.getElementById("chatWindow");
-  const userInput = document.getElementById("userInput");
-  const sendBtn = document.getElementById("sendBtn");
-  const micBtn = document.getElementById("micBtn");
-  const newChatBtn = document.getElementById("newChatBtn");
-  const fileInput = document.getElementById("fileInput");
-  const chatHistory = document.getElementById("chatHistory");
+  // Toggle for Desktop
+  toggleSidebar.addEventListener("click", () => {
+    sidebar.classList.toggle("closed");
+    container.classList.toggle("sidebar-closed");
 
-  // ===== CHAT LOGIC =====
-  let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
-  let currentChat = 0;
-
-  function saveChats() { localStorage.setItem("ballsAI_chats", JSON.stringify(chats)); }
-
-  function loadChats() {
-    chatHistory.innerHTML = "";
-    chats.forEach((chat, index) => {
-      const div = document.createElement("div");
-      div.className = "chat-item";
-      div.innerHTML = `<span>${chat.title || "New Chat"}</span>`;
-      div.onclick = () => { currentChat = index; displayMessages(); };
-      chatHistory.appendChild(div);
-    });
-  }
-
-  function displayMessages() {
-    chatWindow.innerHTML = "";
-    if (!chats[currentChat]) return;
-    chats[currentChat].messages.forEach(msg => {
-      const div = document.createElement("div");
-      div.className = `message ${msg.sender}`;
-      div.textContent = msg.text;
-      chatWindow.appendChild(div);
-    });
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  }
-
-  async function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
-    const userMsg = { sender: "user", text };
-    chats[currentChat].messages.push(userMsg);
-    displayMessages();
-    userInput.value = "";
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-      });
-      const data = await res.json();
-      const reply = data.reply || "No reply from model.";
-      chats[currentChat].messages.push({ sender: "bot", text: reply });
-    } catch {
-      chats[currentChat].messages.push({ sender: "bot", text: "⚠️ Server not responding." });
-    }
-    saveChats();
-    displayMessages();
-  }
-
-  sendBtn.onclick = sendMessage;
-  userInput.addEventListener("keydown", e => { if (e.key === "Enter") sendMessage(); });
-  newChatBtn.onclick = () => {
-    chats.push({ title: "New Chat", messages: [] });
-    currentChat = chats.length - 1;
-    saveChats();
-    loadChats();
-    displayMessages();
-  };
-
-  micBtn.onclick = () => {
-    try {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = "en-US";
-      recognition.start();
-      recognition.onresult = (event) => {
-        userInput.value = event.results[0][0].transcript;
-      };
-    } catch {
-      alert("Speech recognition not supported in this browser.");
-    }
-  };
-
-  fileInput.onchange = (e) => {
-    const file = e.target.files[0];
-    if (file) userInput.value += ` [Attached: ${file.name}]`;
-  };
-
-  // ===== SIDEBAR TOGGLE =====
-  function openSidebar() {
-    sidebar.classList.add("open");
-    divider.classList.remove("hidden");
-    bgCanvas.classList.remove("expanded");
-    bgCanvas.classList.add("shrunk");
-  }
-
-  function closeSidebar() {
-    sidebar.classList.remove("open");
-    divider.classList.add("hidden");
-    bgCanvas.classList.remove("shrunk");
-    bgCanvas.classList.add("expanded");
-  }
-
-  toggleSidebar.onclick = () => closeSidebar();
-  floatingToggle.onclick = () => openSidebar();
-
-  function handleResize() {
-    if (window.innerWidth <= 768) {
-      closeSidebar();
+    if (sidebar.classList.contains("closed")) {
+      divider.style.opacity = "0";
     } else {
-      openSidebar();
+      divider.style.opacity = "1";
+    }
+
+    adjustCanvas();
+  });
+
+  // Toggle for Mobile Floating Button
+  floatingToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+
+  // Dummy functional buttons
+  document.getElementById("sendBtn").addEventListener("click", () => {
+    alert("Message sent!");
+  });
+
+  document.getElementById("micBtn").addEventListener("click", () => {
+    alert("Voice recording started!");
+  });
+
+  document.getElementById("newChatBtn").addEventListener("click", () => {
+    alert("New chat created!");
+  });
+
+  // Canvas adjustment
+  const canvas = document.getElementById("bgCanvas");
+  const ctx = canvas.getContext("2d");
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+
+  window.addEventListener("resize", resizeCanvas);
+
+  // Falling animation (simple)
+  const balls = Array.from({ length: 40 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 3 + 1,
+    s: Math.random() * 2 + 0.5,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+    balls.forEach(b => {
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+      b.y += b.s;
+      if (b.y > canvas.height) b.y = 0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Adjust canvas based on sidebar open/close
+  function adjustCanvas() {
+    const open = !sidebar.classList.contains("closed");
+    if (open) {
+      canvas.style.filter = "blur(2px)";
+    } else {
+      canvas.style.filter = "none";
     }
   }
-
-  window.addEventListener("resize", handleResize);
-  handleResize();
-
-  // Init
-  if (chats.length === 0) chats.push({ title: "New Chat", messages: [] });
-  loadChats();
-  displayMessages();
 });
