@@ -204,8 +204,8 @@ body { background: #0e0f10; color: #fff; overflow: hidden; }
 }
 
 #floatingToggle {
-  right: 18px;
-  left: auto;
+  left: 18px;
+  right: auto;
   top: 14px;
   background: #141517;
   border: 2px solid #22a699;
@@ -218,4 +218,5 @@ body { background: #0e0f10; color: #fff; overflow: hidden; }
   background: #22a699;
   color: #111;
 }
+
 
