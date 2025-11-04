@@ -9,11 +9,6 @@ const fileInput = document.getElementById("fileInput");
 let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
 let currentChat = 0;
 
-// Sidebar toggle
-document.getElementById("toggleSidebar").addEventListener("click", () => {
-  document.getElementById("sidebar").classList.toggle("hide");
-});
-
 // ✅ Create a default chat automatically if none exist
 if (chats.length === 0) {
   chats.push({ title: "New Chat", messages: [] });
@@ -59,7 +54,6 @@ function deleteChat(index, e) {
   e.stopPropagation();
   chats.splice(index, 1);
 
-  // ✅ If all chats deleted, recreate default chat
   if (chats.length === 0) {
     chats.push({ title: "New Chat", messages: [] });
     currentChat = 0;
@@ -131,7 +125,6 @@ micBtn.addEventListener("click", () => {
 });
 
 /* ==== File Upload ==== */
-// ✅ Stop auto-sending uploads, show file name only
 fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (file && chats[currentChat]) {
@@ -140,13 +133,14 @@ fileInput.addEventListener("change", (event) => {
   }
 });
 
-// Sidebar toggle
+// ===== SIDEBAR TOGGLE =====
 const sidebar = document.getElementById('sidebar');
 const divider = document.getElementById('divider');
 const container = document.getElementById('container');
-const toggleBtn = document.querySelector('.hamburger');
 const bgCanvas = document.getElementById('bgCanvas');
+const toggleBtn = document.querySelector('.hamburger');
 
+// Floating toggle (for when sidebar closed)
 let floating = document.getElementById('floatingToggle');
 if (!floating) {
   floating = document.createElement('button');
@@ -155,6 +149,7 @@ if (!floating) {
   document.body.appendChild(floating);
 }
 
+// Sidebar behavior
 function closeSidebar() {
   sidebar.classList.add('closed');
   divider.classList.add('closed');
@@ -173,19 +168,32 @@ function openSidebar() {
   bgCanvas.classList.add('shrunk');
 }
 
+// ✅ Hamburger toggle logic fixed
 toggleBtn.addEventListener('click', () => {
-  if (sidebar.classList.contains('closed')) openSidebar();
-  else closeSidebar();
+  if (sidebar.classList.contains('closed')) {
+    openSidebar();
+  } else {
+    closeSidebar();
+  }
 });
 
-floating.addEventListener('click', () => openSidebar());
+// ✅ Floating button also closes sidebar when opened again
+floating.addEventListener('click', () => {
+  openSidebar();
+});
 
-// Initialize bgCanvas size on load
+// Maintain correct state on load
 window.addEventListener('load', () => {
-  if (sidebar.classList.contains('closed')) bgCanvas.classList.add('expanded');
-  else bgCanvas.classList.add('shrunk');
+  if (sidebar.classList.contains('closed')) {
+    bgCanvas.classList.add('expanded');
+  } else {
+    bgCanvas.classList.add('shrunk');
+  }
 });
 
+// Keep hamburger and floating same size (force CSS sync)
+toggleBtn.style.width = floating.style.width = "40px";
+toggleBtn.style.height = floating.style.height = "36px";
 
 loadChats();
 displayMessages();
