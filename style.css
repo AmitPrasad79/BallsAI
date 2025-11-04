@@ -40,7 +40,6 @@ body {
   transition: transform 0.35s ease;
 }
 
-/* Sidebar header */
 .sidebar-header {
   display: flex;
   align-items: center;
@@ -56,7 +55,6 @@ body {
   object-fit: contain;
 }
 
-/* Hamburger button inside sidebar */
 .hamburger {
   width: 40px;
   height: 36px;
@@ -152,7 +150,7 @@ body {
   background: linear-gradient(to bottom, #22a699, #202224);
   box-shadow: 0 0 6px #22a699;
   z-index: 25;
-  transition: left 0.35s ease;
+  transition: transform 0.35s ease, opacity 0.3s ease;
 }
 
 /* ===== CHAT AREA ===== */
@@ -177,7 +175,7 @@ body {
   gap: 10px;
 }
 
-/* ===== MESSAGES ===== */
+/* ===== MESSAGE STYLING ===== */
 .message {
   max-width: 70%;
   padding: 10px 15px;
@@ -249,13 +247,14 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== SIDEBAR CLOSED ===== */
+/* ===== SIDEBAR HIDE STATE ===== */
 #sidebar.closed {
   transform: translateX(-260px);
 }
 
 #divider.closed {
-  left: 0;
+  transform: translateX(-260px);
+  opacity: 0;
 }
 
 #container.sidebar-closed #chatArea {
@@ -287,11 +286,11 @@ body {
 
 /* ===== BACKGROUND BALLS ===== */
 #bgCanvas {
-  position: fixed;
+  position: absolute;
   top: 0;
-  left: 260px;
-  width: calc(100vw - 260px);
-  height: 100vh;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: transparent;
   pointer-events: none;
   z-index: 1;
@@ -309,6 +308,21 @@ body {
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  #chatBox {
+    width: 80%;
+  }
+  #chatArea {
+    margin-left: 220px;
+  }
+  #sidebar {
+    width: 220px;
+  }
+  #divider {
+    left: 220px;
+  }
+}
+
 @media (max-width: 768px) {
   #sidebar {
     width: 220px;
@@ -323,10 +337,76 @@ body {
   }
 
   #divider.closed {
-    left: 0;
+    transform: translateX(-220px);
   }
 
   #chatBox {
     width: 90%;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 600px) {
+  #chatBox {
+    width: 94%;
+    bottom: 15px;
+    border-radius: 10px;
+  }
+
+  #userInput {
+    font-size: 14px;
+  }
+
+  #sendBtn, #micBtn {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  #newChatBtn {
+    font-size: 14px;
+  }
+
+  .hamburger {
+    width: 36px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  #floatingToggle {
+    top: 10px;
+    left: 10px;
+    width: 36px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  #chatArea {
+    margin-left: 0;
+  }
+
+  #sidebar {
+    transform: translateX(-100%);
+  }
+
+  #sidebar.closed {
+    transform: translateX(-100%);
+  }
+
+  #divider {
+    display: none;
+  }
+
+  #floatingToggle {
+    display: flex;
+  }
+
+  #chatBox {
+    width: 92%;
+    bottom: 10px;
   }
 }
