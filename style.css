@@ -50,13 +50,34 @@ body {
 }
 
 .logo {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   object-fit: contain;
 }
 
-/* New chat button */
+/* Hamburger button inside sidebar */
+.hamburger {
+  width: 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #141517;
+  border: 2px solid #22a699;
+  color: #22a699;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background: #22a699;
+  color: #111;
+}
+
+/* ===== NEW CHAT BUTTON ===== */
 #newChatBtn {
   width: 90%;
   padding: 10px;
@@ -74,7 +95,7 @@ body {
   background-color: #1f9186;
 }
 
-/* Search */
+/* ===== SEARCH ===== */
 .search-box {
   width: 90%;
   margin-top: 15px;
@@ -89,7 +110,7 @@ body {
   color: #dcdcdc;
 }
 
-/* Chat history */
+/* ===== CHAT HISTORY ===== */
 #chatHistory {
   margin-top: 15px;
   width: 90%;
@@ -131,7 +152,7 @@ body {
   background: linear-gradient(to bottom, #22a699, #202224);
   box-shadow: 0 0 6px #22a699;
   z-index: 25;
-  transition: transform 0.35s ease, opacity 0.3s ease;
+  transition: left 0.35s ease;
 }
 
 /* ===== CHAT AREA ===== */
@@ -156,7 +177,7 @@ body {
   gap: 10px;
 }
 
-/* ===== MESSAGE STYLING ===== */
+/* ===== MESSAGES ===== */
 .message {
   max-width: 70%;
   padding: 10px 15px;
@@ -228,14 +249,13 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== SIDEBAR HIDE STATE ===== */
+/* ===== SIDEBAR CLOSED ===== */
 #sidebar.closed {
   transform: translateX(-260px);
 }
 
 #divider.closed {
-  transform: translateX(-260px);
-  opacity: 0;
+  left: 0;
 }
 
 #container.sidebar-closed #chatArea {
@@ -267,48 +287,26 @@ body {
 
 /* ===== BACKGROUND BALLS ===== */
 #bgCanvas {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  left: 260px;
+  width: calc(100vw - 260px);
+  height: 100vh;
   background: transparent;
   pointer-events: none;
   z-index: 1;
+  transition: all 0.5s ease;
 }
 
 #bgCanvas.expanded {
   left: 0;
   width: 100vw;
-  transition: all 0.5s ease;
 }
 
 #bgCanvas.shrunk {
   left: 260px;
   width: calc(100vw - 260px);
-  transition: all 0.5s ease;
 }
-
-.hamburger, #floatingToggle {
-  width: 40px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #141517;
-  border: 2px solid #22a699;
-  color: #22a699;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.3s ease;
-}
-
-.hamburger:hover, #floatingToggle:hover {
-  background: #22a699;
-  color: #111;
-}
-
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
@@ -325,7 +323,7 @@ body {
   }
 
   #divider.closed {
-    transform: translateX(-220px);
+    left: 0;
   }
 
   #chatBox {
