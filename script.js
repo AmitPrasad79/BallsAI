@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
   const divider = document.getElementById("divider");
   const floatingToggle = document.getElementById("floatingToggle");
+  const toggleSidebar = document.getElementById("toggleSidebar");
   const bgCanvas = document.getElementById("bgCanvas");
   const container = document.getElementById("container");
-  const chatBox = document.getElementById("chatBox");
 
   const chatWindow = document.getElementById("chatWindow");
   const userInput = document.getElementById("userInput");
@@ -96,32 +96,22 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ===== SIDEBAR TOGGLE =====
-  let sidebarOpen = true;
-
   function openSidebar() {
-    sidebar.classList.remove("closed");
+    sidebar.classList.add("open");
     divider.classList.remove("hidden");
     bgCanvas.classList.remove("expanded");
     bgCanvas.classList.add("shrunk");
-    container.classList.remove("sidebar-closed");
-    chatBox.style.width = "68%";
-    sidebarOpen = true;
   }
 
   function closeSidebar() {
-    sidebar.classList.add("closed");
+    sidebar.classList.remove("open");
     divider.classList.add("hidden");
     bgCanvas.classList.remove("shrunk");
     bgCanvas.classList.add("expanded");
-    container.classList.add("sidebar-closed");
-    chatBox.style.width = "80%";
-    sidebarOpen = false;
   }
 
-  floatingToggle.onclick = () => {
-    if (sidebarOpen) closeSidebar();
-    else openSidebar();
-  };
+  toggleSidebar.onclick = () => closeSidebar();
+  floatingToggle.onclick = () => openSidebar();
 
   function handleResize() {
     if (window.innerWidth <= 768) {
