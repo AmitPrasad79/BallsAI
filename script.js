@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.getElementById("fileInput");
   const chatHistory = document.getElementById("chatHistory");
 
-  // ===== CHAT LOGIC =====
   let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
   let currentChat = 0;
 
@@ -125,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (file) userInput.value += ` [Attached: ${file.name}]`;
   };
 
-  // ===== SIDEBAR TOGGLE =====
   function openSidebar() {
     sidebar.classList.add("open");
     divider.classList.remove("hidden");
@@ -147,11 +145,10 @@ document.addEventListener("DOMContentLoaded", () => {
   toggleSidebar.onclick = () => closeSidebar();
   floatingToggle.onclick = () => openSidebar();
 
-  // ===== Chat box position adjustment =====
   function adjustChatBox(isSidebarOpen) {
     if (isSidebarOpen) {
       chatBox.style.width = "60%";
-      chatBox.style.left = "calc(50% + 130px)"; // move slightly to right to balance sidebar
+      chatBox.style.left = "calc(50% + 130px)"; 
     } else {
       chatBox.style.width = "70%";
       chatBox.style.left = "50%";
@@ -169,7 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", handleResize);
   handleResize();
 
-  // ===== INIT =====
   if (chats.length === 0) chats.push({ title: "New Chat", messages: [] });
   loadChats();
   displayMessages();
