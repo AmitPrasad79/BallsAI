@@ -202,3 +202,20 @@ body { background: #0e0f10; color: #fff; overflow: hidden; }
   #chatBox { width: 96%; bottom: 10px; }
   .hamburger { width: 34px; height: 32px; font-size: 15px; }
 }
+
+#floatingToggle {
+  right: 18px;
+  left: auto;
+  top: 14px;
+  background: #141517;
+  border: 2px solid #22a699;
+  color: #22a699;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+#floatingToggle:hover {
+  background: #22a699;
+  color: #111;
+}
+
