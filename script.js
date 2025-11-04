@@ -141,30 +141,39 @@ fileInput.addEventListener("change", (event) => {
 });
 
 // Sidebar toggle
-const toggleSidebar = document.getElementById('toggleSidebar');
 const sidebar = document.getElementById('sidebar');
 const divider = document.getElementById('divider');
 const container = document.getElementById('container');
+const toggleBtn = document.querySelector('.hamburger');
 
-// Create floating toggle for reopening
-const floatingToggle = document.createElement('button');
-floatingToggle.id = 'floatingToggle';
-floatingToggle.textContent = '☰';
-document.body.appendChild(floatingToggle);
+let floating = document.getElementById('floatingToggle');
+if (!floating) {
+  floating = document.createElement('button');
+  floating.id = 'floatingToggle';
+  floating.innerHTML = '☰';
+  document.body.appendChild(floating);
+}
 
-toggleSidebar.addEventListener('click', () => {
+function closeSidebar() {
   sidebar.classList.add('closed');
   divider.classList.add('closed');
   container.classList.add('sidebar-closed');
-  floatingToggle.style.display = 'block';
-});
+  floating.style.display = 'flex';
+}
 
-floatingToggle.addEventListener('click', () => {
+function openSidebar() {
   sidebar.classList.remove('closed');
   divider.classList.remove('closed');
   container.classList.remove('sidebar-closed');
-  floatingToggle.style.display = 'none';
+  floating.style.display = 'none';
+}
+
+toggleBtn.addEventListener('click', () => {
+  if (sidebar.classList.contains('closed')) openSidebar();
+  else closeSidebar();
 });
+
+floating.addEventListener('click', () => openSidebar());
 
 
 loadChats();
