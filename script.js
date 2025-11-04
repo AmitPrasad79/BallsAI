@@ -140,5 +140,15 @@ fileInput.addEventListener("change", (event) => {
   }
 });
 
+// Sidebar toggle
+const toggleBtn = document.getElementById("toggleSidebar");
+const sidebar = document.getElementById("sidebar");
+const divider = document.getElementById("divider");
+
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("hide");
+  divider.classList.toggle("hide");
+});
+
 loadChats();
 displayMessages();
