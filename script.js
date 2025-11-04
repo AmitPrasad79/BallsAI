@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let chats = JSON.parse(localStorage.getItem("ballsAI_chats")) || [];
   let currentChat = 0;
 
-  // ✅ Create default chat if none exist
   if (chats.length === 0) {
     chats.push({ title: "New Chat", messages: [] });
     currentChat = 0;
@@ -139,50 +138,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const divider = document.getElementById("divider");
   const container = document.getElementById("container");
   const bgCanvas = document.getElementById("bgCanvas");
-  const toggleBtn = document.querySelector(".hamburger");
+  const toggleBtn = document.getElementById("toggleSidebar");
+  const floating = document.getElementById("floatingToggle");
 
-  // Floating toggle (for when sidebar closed)
-  let floating = document.getElementById("floatingToggle");
-  if (!floating) {
-    floating = document.createElement("button");
-    floating.id = "floatingToggle";
-    floating.innerHTML = "☰";
-    document.body.appendChild(floating);
+  function toggleSidebarState() {
+    const isClosed = sidebar.classList.toggle("closed");
+    divider.classList.toggle("closed");
+    container.classList.toggle("sidebar-closed");
+    bgCanvas.classList.toggle("expanded");
+    bgCanvas.classList.toggle("shrunk");
+
+    if (isClosed) {
+      floating.style.display = "flex";
+    } else {
+      floating.style.display = "none";
+    }
   }
 
-  function closeSidebar() {
+  toggleBtn.addEventListener("click", toggleSidebarState);
+  floating.addEventListener("click", toggleSidebarState);
+
+  // Match both hamburger styles
+  [toggleBtn, floating].forEach((btn) => {
+    btn.style.width = "42px";
+    btn.style.height = "38px";
+    btn.style.fontSize = "22px";
+    btn.style.justifyContent = "center";
+    btn.style.alignItems = "center";
+    btn.style.display = "flex";
+    btn.style.cursor = "pointer";
+  });
+
+  // Show floating toggle by default on phones
+  if (window.innerWidth <= 768) {
     sidebar.classList.add("closed");
     divider.classList.add("closed");
     container.classList.add("sidebar-closed");
     floating.style.display = "flex";
-    bgCanvas.classList.remove("shrunk");
     bgCanvas.classList.add("expanded");
   }
 
-  function openSidebar() {
-    sidebar.classList.remove("closed");
-    divider.classList.remove("closed");
-    container.classList.remove("sidebar-closed");
-    floating.style.display = "none";
-    bgCanvas.classList.remove("expanded");
-    bgCanvas.classList.add("shrunk");
-  }
-
-  toggleBtn.addEventListener("click", () => {
-    if (sidebar.classList.contains("closed")) openSidebar();
-    else closeSidebar();
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      floating.style.display = "none";
+      sidebar.classList.remove("closed");
+      divider.classList.remove("closed");
+      container.classList.remove("sidebar-closed");
+      bgCanvas.classList.remove("expanded");
+      bgCanvas.classList.add("shrunk");
+    } else if (sidebar.classList.contains("closed")) {
+      floating.style.display = "flex";
+    }
   });
-
-  floating.addEventListener("click", () => openSidebar());
-
-  window.addEventListener("load", () => {
-    if (sidebar.classList.contains("closed")) bgCanvas.classList.add("expanded");
-    else bgCanvas.classList.add("shrunk");
-  });
-
-  // Ensure both buttons look same size
-  toggleBtn.style.width = floating.style.width = "40px";
-  toggleBtn.style.height = floating.style.height = "36px";
 
   loadChats();
   displayMessages();
