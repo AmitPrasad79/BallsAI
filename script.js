@@ -146,10 +146,24 @@ const sidebar = document.getElementById('sidebar');
 const divider = document.getElementById('divider');
 const container = document.getElementById('container');
 
+// Create floating toggle for reopening
+const floatingToggle = document.createElement('button');
+floatingToggle.id = 'floatingToggle';
+floatingToggle.textContent = '☰';
+document.body.appendChild(floatingToggle);
+
 toggleSidebar.addEventListener('click', () => {
-  sidebar.classList.toggle('closed');
-  divider.classList.toggle('closed');
-  container.classList.toggle('sidebar-closed');
+  sidebar.classList.add('closed');
+  divider.classList.add('closed');
+  container.classList.add('sidebar-closed');
+  floatingToggle.style.display = 'block';
+});
+
+floatingToggle.addEventListener('click', () => {
+  sidebar.classList.remove('closed');
+  divider.classList.remove('closed');
+  container.classList.remove('sidebar-closed');
+  floatingToggle.style.display = 'none';
 });
 
 
